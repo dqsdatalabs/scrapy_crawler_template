@@ -1,0 +1,39 @@
+version: "3"
+services:
+  splash:
+    restart: always
+    image: scrapinghub/splash
+    container_name: splash
+    ports:
+      - "5023:5023"
+      - "8050:8050"
+      - "8051:8051"
+    environment:
+      VIRTUAL_HOST: splash.localhost
+  python:
+    build: .
+    container_name: scrapy
+    depends_on:
+      - splash
+      - db
+    tty: true
+    volumes:
+      - ./:/app
+  db:
+    image: mysql:5.7
+    container_name: mysql_host
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: soccer_roi_calculator
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: "Asia/Tokyo"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+volumes:
+  dbdata:

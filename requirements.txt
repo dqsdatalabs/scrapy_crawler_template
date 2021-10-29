@@ -5,3 +5,4 @@ pandas
 wget
 python-dotenv 
 numpy
+mysql-connector-python
