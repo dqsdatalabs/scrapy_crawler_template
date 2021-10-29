@@ -1,0 +1,7 @@
+scrapy
+requests
+bs4
+pandas
+wget
+python-dotenv 
+numpy
